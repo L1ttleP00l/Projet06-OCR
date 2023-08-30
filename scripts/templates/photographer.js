@@ -14,11 +14,11 @@ function photographerTemplate(data) {
         img.setAttribute("aria-label", "Sélection du photographe " + name)
         const h2 = document.createElement('h2');
         const pcity = document.createElement('p');
-        pcity.setAttribute("class", "city")
+        // pcity.setAttribute("class", "city")
         const ptagline = document.createElement('p')
-        ptagline.setAttribute("class", "tagline")
+        // ptagline.setAttribute("class", "tagline")
         const pprice = document.createElement('p')
-        pprice.setAttribute("class", "price")
+        // pprice.setAttribute("class", "price")
         h2.textContent = name;
         pcity.textContent = city + ", " + country
         ptagline.textContent = tagline

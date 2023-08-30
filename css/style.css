@@ -71,21 +71,21 @@ h1 {
     margin: 25px 0 0 0;
 }
 
-.city {
+.photographer_section article p {
     color: #901C1C;
     font-size: 0.875rem;
     font-weight: 100;
     margin: 5px 0 0 0;
 }
 
-.tagline {
+.photographer_section article p+p {
     color: black;
     font-size: 0.625rem;
     font-weight: 100;
     margin: 5px 0 0 0;
 }
 
-.price {
+.photographer_section article p+p+p{
     color: grey;
     font-size: 0.625rem;
     font-weight: 100;
