@@ -7,8 +7,7 @@ function photographerTemplate(data) {
 
     function getUserCardDOM() {
         let menu = document.getElementsByClassName("photograph-header")[0];
-        let button = document.getElementsByClassName("contact_button")[0];
-        console.log(menu)
+        // let button = document.getElementsByClassName("contact_button")[0];
         const div = document.createElement('div');
         div.setAttribute("class","text");
         const img = document.createElement('img');
@@ -37,6 +36,9 @@ function photographerTemplate(data) {
         // Adds the photographer's name to the browser tab
         document.getElementById("title").innerText = "Fisheye - " + (name.split('')[0]) + ". " + (name.split(' ')[1]);
 
+        // document.getElementById("contact").innerText = "Contactez-moi\n" + name;
+
+
         return (div);
     }
     return { name, picture, getUserCardDOM }
@@ -59,12 +61,12 @@ async function displayData(photographers) {
     console.log(id)
 
     let photographer = photographers.find((photographer) => photographer.id.toString() === id);
-    console.log(photographer);
+    // console.log(photographer);
 
     const photographerModel = photographerTemplate(photographer);
     const userCardDOM = photographerModel.getUserCardDOM();
     // photographersSection.appendChild(userCardDOM);
-    console.log(photographerModel)
+    // console.log(photographerModel)
 }
 
 async function init() {
