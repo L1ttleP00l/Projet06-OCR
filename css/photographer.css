@@ -118,3 +118,67 @@ form input {
     border: none;
     border-radius: 5px;
 }
+
+.media {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5rem 1rem;
+    margin: 50px 100px 0px 100px;
+}
+
+.media-item {
+    width: 28.125rem;
+    height: 25rem;
+    transition: 400ms ease-in-out;
+}
+
+.media-item:hover {
+    cursor: pointer;
+    filter:drop-shadow(0 0 0.5rem #D3573C);
+}
+
+.media-item div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 3.125rem;
+    color: #901C1C;
+}
+
+.media-item div div {
+    width: 12%;
+    /* gap: 5px; */
+}
+
+/* Styles pour les images */
+.media-item img, video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* main {
+    gap: 100px;
+    display: flex;
+    flex-direction: column;
+} */
+
+.box {
+    display: flex;
+    background-color: #D3573C;
+    border-radius: 5px 5px 0px 0px;
+    position: fixed;
+    right: 2rem;
+    bottom: 0;
+    font-size: 1.125rem;
+    padding: 0.938rem;
+    width: fit-content;
+    height: fit-content;
+    text-align: center;
+    align-items: center;
+}

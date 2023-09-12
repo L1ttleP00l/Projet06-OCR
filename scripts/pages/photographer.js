@@ -34,7 +34,7 @@ function photographerTemplate(data) {
         // div.appendChild(pprice);
         
         // Adds the photographer's name to the browser tab
-        document.getElementById("title").innerText = "Fisheye - " + (name.split('')[0]) + ". " + (name.split(' ')[1]);
+        document.title = "Fisheye - " + (name.split('')[0]) + ". " + (name.split(' ')[1]);
 
         // document.getElementById("contact").innerText = "Contactez-moi\n" + name;
 
@@ -46,10 +46,11 @@ function photographerTemplate(data) {
 
 
 
-// Récupère les informations concernant les photographes depuis le fichier "photographers.json"
+// Retrieves photographer information from the file "photographers.json"
 async function getPhotographers() {
     const response = await fetch("data/photographers.json")
     const data = await response.json()
+    // console.table(data);
     return data
 }
 
@@ -58,21 +59,126 @@ async function displayData(photographers) {
     // console.table(photographers)
     
     let id = new URL(document.location).searchParams.get('id');
-    console.log(id)
+    // console.log(id)
 
     let photographer = photographers.find((photographer) => photographer.id.toString() === id);
     // console.log(photographer);
 
     const photographerModel = photographerTemplate(photographer);
     const userCardDOM = photographerModel.getUserCardDOM();
-    // photographersSection.appendChild(userCardDOM);
-    // console.log(photographerModel)
 }
 
 async function init() {
-    // Récupère les datas des photographes
-    const { photographers } = await getPhotographers();
+    // Recovers data from photographers
+    const { photographers, media } = await getPhotographers();
+    // Recovers media from photographers
+    // console.table(photographers);
+    // console.table(media);
     displayData(photographers);
+    displayMedia(media);
 }
 
 init();
+
+
+async function displayMedia(media) {
+    const dataSection = document.querySelector(".media");
+
+    // Get photographer ID from URL
+    let id = new URL(document.location).searchParams.get('id');
+    
+    // Find the corresponding media whose "photographerId" corresponds to the photographer's ID
+    let mediaItems = media.filter((item) => item.photographerId.toString() === id);
+
+    for (const mediaItem of mediaItems) {
+        const dataModel = dataTemplate(mediaItem);
+        const dataCardDOM = dataModel.getDataCardDOM();
+        dataSection.appendChild(dataCardDOM);
+    }
+}
+
+function dataTemplate(mediaItem) {
+    const { id, photographerId, title, image, video, likes, date, price } = mediaItem;
+
+    function getDataCardDOM() {
+        const mediaContainer = document.createElement("div");
+        mediaContainer.classList.add("media-item");
+
+
+        if (image) {
+            // If it's an image, create an <img> element
+            const imageElement = document.createElement("img");
+            imageElement.src = `assets/images/${photographerId}/${image}`;
+            imageElement.alt = title;
+            mediaContainer.appendChild(imageElement);
+
+            // Create a div for the title and likes
+            const infoDiv = document.createElement("div");
+            infoDiv.classList.add("media-info");
+
+            // Add image name
+            const imageNameElement = document.createElement("p");
+            imageNameElement.textContent = title;
+
+            // Create a div for likes and the icon
+            const likeDiv = document.createElement("div");
+            likeDiv.classList.add("like");
+
+            // Adds the number of likes
+            const likesElement = document.createElement("p");
+            likesElement.textContent = `${likes}`;
+
+            // Adds Font Awesome icon for likes
+            const likesIconElement = document.createElement("i");
+            likesIconElement.classList.add("fas", "fa-heart");
+
+            // Adds title and likes to info div
+            infoDiv.appendChild(imageNameElement);
+            infoDiv.appendChild(likeDiv);
+            likeDiv.appendChild(likesElement);
+            likeDiv.appendChild(likesIconElement);
+
+            // Adds the information div to the main container
+            mediaContainer.appendChild(infoDiv);
+        } else if (video) {
+            // If it's a video, create a <video> element
+            const videoElement = document.createElement("video");
+            videoElement.src = `assets/images/${photographerId}/${video}`;
+            videoElement.controls = true;
+            mediaContainer.appendChild(videoElement);
+
+            // Create a div for likes and the icon
+            const infoDiv = document.createElement("div");
+            infoDiv.classList.add("media-info");
+
+            // Add video name
+            const videoNameElement = document.createElement("p");
+            videoNameElement.textContent = title;
+
+            // Create a div for likes and the icon
+            const likeDiv = document.createElement("div");
+            likeDiv.classList.add("like");
+
+            // Adds the number of likes
+            const likesElement = document.createElement("p");
+            likesElement.textContent = `${likes}`;
+
+            // Adds Font Awesome icon for likes
+            const likesIconElement = document.createElement("i");
+            likesIconElement.classList.add("fas", "fa-heart");
+
+            // Adds title and likes to info div
+            infoDiv.appendChild(videoNameElement);
+            infoDiv.appendChild(likeDiv);
+            likeDiv.appendChild(likesElement);
+            likeDiv.appendChild(likesIconElement);
+
+            // Adds the information div to the main container
+            mediaContainer.appendChild(infoDiv);
+        }
+
+        return mediaContainer;
+    }
+
+    return { getDataCardDOM };
+}

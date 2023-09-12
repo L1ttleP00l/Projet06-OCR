@@ -91,3 +91,9 @@ h1 {
     font-weight: 100;
     margin: 5px 0 0 0;
 }
+
+/* Styles pour le focus sur l'ensemble du site */
+*:focus {
+    outline: none; /* Pour supprimer la bordure par défaut du focus */
+    filter: drop-shadow(0 0 0.5rem #D3573C); /* Style de focus basé sur le drop-shadow du :hover */
+}
