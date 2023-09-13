@@ -20,6 +20,13 @@
       <div class="photograph-header">
         <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
       </div>
+          <!-- Lightbox overlay and content -->
+      <div class="lightbox-overlay" onclick="closeLightbox()"></div>
+      <div class="lightbox-content">
+        <span onclick="closeLightbox()" style="position: absolute; top: 10px; right: 10px; cursor: pointer;">X</span>
+        <div id="lightbox-media-container"></div>
+        <div id="lightbox-title"></div>
+      </div>
         <!-- Ajoutez ici votre section "media" -->
       <section class="media">
         <!-- Contenu de la section media -->
@@ -49,5 +56,6 @@
 		</div>
     <script src="scripts/pages/photographer.js"></script>
     <script src="scripts/utils/contactForm.js"></script>
+    <script src="scripts/utils/lightboxForm.js"></script>
   </body>
 </html>

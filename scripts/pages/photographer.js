@@ -110,6 +110,7 @@ function dataTemplate(mediaItem) {
             const imageElement = document.createElement("img");
             imageElement.src = `assets/images/${photographerId}/${image}`;
             imageElement.alt = title;
+            imageElement.addEventListener("click", () => openLightbox(imageElement.src));
             mediaContainer.appendChild(imageElement);
 
             // Create a div for the title and likes
@@ -144,7 +145,8 @@ function dataTemplate(mediaItem) {
             // If it's a video, create a <video> element
             const videoElement = document.createElement("video");
             videoElement.src = `assets/images/${photographerId}/${video}`;
-            videoElement.controls = true;
+            videoElement.controls = false;
+            videoElement.addEventListener("click", () => openLightbox(videoElement.src));
             mediaContainer.appendChild(videoElement);
 
             // Create a div for likes and the icon
