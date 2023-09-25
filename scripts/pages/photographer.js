@@ -36,7 +36,15 @@ function photographerTemplate(data) {
         // Adds the photographer's name to the browser tab
         document.title = "Fisheye - " + (name.split('')[0]) + ". " + (name.split(' ')[1]);
 
-        // document.getElementById("contact").innerText = "Contactez-moi\n" + name;
+        document.getElementById("contact").innerText = "Contactez-moi\n" + name;
+
+        // var contactHeader = document.getElementById("contact"); // Récupère l'élément h2 par son ID
+
+        // var paragraphElement = document.createElement("h2");
+        // paragraphElement.textContent = name; // Remplacez "Votre texte ici" par le texte que vous souhaitez ajouter
+
+        // contactHeader.insertAdjacentElement("afterend", paragraphElement);
+
 
 
         return (div);
