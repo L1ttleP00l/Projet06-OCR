@@ -13,8 +13,19 @@ function openLightbox(mediaSrc, title) {
     lightboxMediaContainer.appendChild(mediaElement);
     lightboxTitle.textContent = title;
 
+    // Afficher la lightbox
     lightboxOverlay.style.display = 'block';
     lightboxContent.style.display = 'block';
+
+    // Désactiver le défilement en arrière-plan
+    document.body.style.overflow = 'hidden';
+
+    // Centrer la lightbox horizontalement
+    lightboxContent.style.left = '50%';
+
+    // Centrer la lightbox verticalement par rapport à la position actuelle de la page
+    const currentScroll = window.scrollY || document.documentElement.scrollTop;
+    lightboxContent.style.top = `${currentScroll + (window.innerHeight / 2)}px`;
 }
 
 function createImageElement(imageSrc) {
@@ -38,6 +49,10 @@ function closeLightbox() {
     const lightboxOverlay = document.querySelector('.lightbox-overlay');
     const lightboxContent = document.querySelector('.lightbox-content');
 
+    // Cacher la lightbox
     lightboxOverlay.style.display = 'none';
     lightboxContent.style.display = 'none';
+
+    // Réactiver le défilement en arrière-plan
+    document.body.style.overflow = 'auto';
 }

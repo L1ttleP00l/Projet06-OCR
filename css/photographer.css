@@ -216,7 +216,6 @@ form textarea {
     align-items: center;
 }
 
-/* Styles for the lightbox overlay */
 .lightbox-overlay {
     display: none;
     position: fixed;
@@ -228,7 +227,6 @@ form textarea {
     z-index: 1;
 }
 
-/* Styles for the lightbox content */
 .lightbox-content {
     display: none;
     position: absolute;
@@ -241,7 +239,10 @@ form textarea {
     z-index: 2;
 }
 
-/* Style to center the image inside the lightbox */
+.lightbox-overlay:focus {
+    background: transparent;
+}
+
 .lightbox-content img, video {
     max-width: 100%;
     max-height: 80vh;
