@@ -56,10 +56,16 @@ function photographerTemplate(data) {
 
 // Retrieves photographer information from the file "photographers.json"
 async function getPhotographers() {
-    const response = await fetch("data/photographers.json")
-    const data = await response.json()
-    // console.table(data);
-    return data
+    try {
+        const response = await fetch("data/photographers.json");
+        if (!response.ok) {
+            throw new Error("Network response was not ok: " + response.statusText);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Fetch error: ", error);
+    }
 }
 
 async function displayData(photographers) {
