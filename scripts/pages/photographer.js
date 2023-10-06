@@ -98,14 +98,15 @@ async function displayMedia(media) {
     // Find the corresponding media whose "photographerId" corresponds to the photographer's ID
     let mediaItems = media.filter((item) => item.photographerId.toString() === id);
 
-    for (const mediaItem of mediaItems) {
-        const dataModel = dataTemplate(mediaItem);
+    for (let index = 0; index < mediaItems.length; index++) {
+        const mediaItem = mediaItems[index]
+        const dataModel = dataTemplate(mediaItem, mediaItems, index);
         const dataCardDOM = dataModel.getDataCardDOM();
         dataSection.appendChild(dataCardDOM);
     }
 }
 
-function dataTemplate(mediaItem) {
+function dataTemplate(mediaItem, mediaList, index) {
     const { id, photographerId, title, image, video, likes, date, price } = mediaItem;
 
     function getDataCardDOM() {
@@ -118,7 +119,7 @@ function dataTemplate(mediaItem) {
             const imageElement = document.createElement("img");
             imageElement.src = `assets/images/${photographerId}/${image}`;
             imageElement.alt = title;
-            imageElement.addEventListener("click", () => openLightbox(imageElement.src));
+            imageElement.addEventListener("click", () => openLightbox(imageElement.src, mediaList, index));
             mediaContainer.appendChild(imageElement);
 
             // Create a div for the title and likes
@@ -154,7 +155,7 @@ function dataTemplate(mediaItem) {
             const videoElement = document.createElement("video");
             videoElement.src = `assets/images/${photographerId}/${video}`;
             videoElement.controls = false;
-            videoElement.addEventListener("click", () => openLightbox(videoElement.src));
+            videoElement.addEventListener("click", () => openLightbox(videoElement.src, mediaList, index));
             mediaContainer.appendChild(videoElement);
 
             // Create a div for likes and the icon

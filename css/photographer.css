@@ -239,11 +239,18 @@ form textarea {
     z-index: 2;
 }
 
-.lightbox-overlay:focus {
+/* .lightbox-overlay:focus {
     background: transparent;
-}
+} */
 
 .lightbox-content img, video {
     max-width: 100%;
     max-height: 80vh;
+}
+
+#lightbox-title {
+    color: #901C1C;
+    font-size: 1rem;
+    font-weight: 100;
+    margin: 10px 0 -5px 0;
 }

@@ -1,8 +1,11 @@
-function openLightbox(mediaSrc, title) {
+function openLightbox(mediaSrc, mediaList, index) {
+    const media = mediaList[index]
     const lightboxOverlay = document.querySelector('.lightbox-overlay');
     const lightboxContent = document.querySelector('.lightbox-content');
     const lightboxMediaContainer = document.getElementById('lightbox-media-container');
     const lightboxTitle = document.getElementById('lightbox-title');
+
+    console.log(mediaList[index])
 
     // Create a new media element (either image or video)
     const mediaElement = mediaSrc.endsWith('.mp4')
@@ -11,19 +14,19 @@ function openLightbox(mediaSrc, title) {
 
     lightboxMediaContainer.innerHTML = '';
     lightboxMediaContainer.appendChild(mediaElement);
-    lightboxTitle.textContent = title;
+    lightboxTitle.textContent = media.title;
 
-    // Afficher la lightbox
+    // Display lightbox
     lightboxOverlay.style.display = 'block';
     lightboxContent.style.display = 'block';
 
-    // Désactiver le défilement en arrière-plan
+    // Disable background scrolling
     document.body.style.overflow = 'hidden';
 
-    // Centrer la lightbox horizontalement
+    // Center lightbox horizontally
     lightboxContent.style.left = '50%';
 
-    // Centrer la lightbox verticalement par rapport à la position actuelle de la page
+    // Center lightbox vertically in relation to current page position
     const currentScroll = window.scrollY || document.documentElement.scrollTop;
     lightboxContent.style.top = `${currentScroll + (window.innerHeight / 2)}px`;
 }
@@ -49,10 +52,32 @@ function closeLightbox() {
     const lightboxOverlay = document.querySelector('.lightbox-overlay');
     const lightboxContent = document.querySelector('.lightbox-content');
 
-    // Cacher la lightbox
+    // Hide lightbox
     lightboxOverlay.style.display = 'none';
     lightboxContent.style.display = 'none';
 
-    // Réactiver le défilement en arrière-plan
+    // Re-enable background scrolling
     document.body.style.overflow = 'auto';
+}
+
+function previousElement(mediaList, index) {
+    let newIndex = index
+    if (index===0) {
+        newIndex = mediaList.length-1
+    } else {
+        newIndex = index-1
+    }
+
+    const newMedia = mediaList[newIndex]
+}
+
+function nextElement(mediaList, index) {
+    let newIndex = index
+    if (index===mediaList.length-1) {
+        newIndex = 0
+    } else {
+        newIndex = index+1
+    }
+
+    const newMedia = mediaList[newIndex]
 }
