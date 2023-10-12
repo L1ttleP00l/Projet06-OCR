@@ -125,7 +125,15 @@ function dataTemplate(mediaItem, mediaList, index) {
             const imageElement = document.createElement("img");
             imageElement.src = `assets/images/${photographerId}/${image}`;
             imageElement.alt = title;
+            imageElement.tabIndex = 0;
+            imageElement.setAttribute("role", "button");
+
             imageElement.addEventListener("click", () => openLightbox(imageElement.src, mediaList, index));
+            imageElement.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    openLightbox(imageElement.src, mediaList, index);
+                }
+            });
             mediaContainer.appendChild(imageElement);
 
             // Create a div for the title and likes
@@ -161,7 +169,15 @@ function dataTemplate(mediaItem, mediaList, index) {
             const videoElement = document.createElement("video");
             videoElement.src = `assets/images/${photographerId}/${video}`;
             videoElement.controls = false;
+            videoElement.tabIndex = 0;
+            videoElement.setAttribute("role", "button");
+
             videoElement.addEventListener("click", () => openLightbox(videoElement.src, mediaList, index));
+            videoElement.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    openLightbox(videoElement.src, mediaList, index);
+                }
+            });
             mediaContainer.appendChild(videoElement);
 
             // Create a div for likes and the icon

@@ -2,7 +2,7 @@ let currentMediaList = null;
 let currentIndex = null;
 
 function openLightbox(mediaSrc, mediaList, index) {
-    const media = mediaList[index]
+    const media = mediaList[index];
     const lightboxOverlay = document.querySelector('.lightbox-overlay');
     const lightboxContent = document.querySelector('.lightbox-content');
     const lightboxMediaContainer = document.getElementById('lightbox-media-container');
@@ -28,11 +28,36 @@ function openLightbox(mediaSrc, mediaList, index) {
 
     currentMediaList = mediaList;
     currentIndex = index;
-    
+
     document.getElementById('lightbox-arrow-left').addEventListener('click', () => previousElement(currentMediaList, currentIndex));
     document.getElementById('lightbox-arrow-right').addEventListener('click', () => nextElement(currentMediaList, currentIndex));
 
+    // Disable all other interactive elements outside the lightbox
+    document.querySelectorAll('a, button, input, textarea').forEach(elem => {
+        if (!lightboxContent.contains(elem)) {
+            elem.setAttribute('tabindex', '-1');
+        }
+    });
+
+    // Enable all interactive elements inside the lightbox
+    lightboxContent.querySelectorAll('i, button').forEach(elem => {
+        elem.setAttribute('tabindex', '0');
+    });
+
     document.addEventListener("keydown", handleKeydown);
+    document.addEventListener("keydown", trapFocusInsideLightbox);
+
+    const focusableElems = Array.from(document.querySelector('.lightbox-content').querySelectorAll('[tabindex="0"]'));
+    if (focusableElems.length > 0) {
+        focusableElems[0].focus();
+    }
+    
+    if (mediaSrc.endsWith('.mp4')) {
+        setTimeout(() => {
+            videoElement.focus();
+        }, 100);
+    }
+    
 }
 
 function createImageElement(imageSrc) {
@@ -43,6 +68,7 @@ function createImageElement(imageSrc) {
 
 function createVideoElement(videoSrc) {
     const videoElement = document.createElement('video');
+    videoElement.tabIndex = 0;
     videoElement.src = videoSrc;
     videoElement.controls = true;
     const sourceElement = document.createElement('source');
@@ -64,7 +90,20 @@ function closeLightbox() {
     document.getElementById('lightbox-arrow-left').removeEventListener('click', () => previousElement(currentMediaList, currentIndex));
     document.getElementById('lightbox-arrow-right').removeEventListener('click', () => nextElement(currentMediaList, currentIndex));
 
+    // Enable all other interactive elements outside the lightbox
+    document.querySelectorAll('[tabindex="-1"]').forEach(elem => {
+        elem.removeAttribute('tabindex');
+    });
+    
+
+    // Disable all interactive elements inside the lightbox
+    lightboxContent.querySelectorAll('i, button').forEach(elem => {
+        elem.setAttribute('tabindex', '-1');
+    });
+
     document.removeEventListener("keydown", handleKeydown);
+    document.removeEventListener("keydown", trapFocusInsideLightbox);
+
 }
 
 function handleKeydown(event) {
@@ -88,7 +127,7 @@ function changeMedia(mediaList, index) {
 
     const lightboxMediaContainer = document.getElementById('lightbox-media-container');
     const lightboxTitle = document.getElementById('lightbox-title');
-    
+
     lightboxMediaContainer.innerHTML = '';
     lightboxMediaContainer.appendChild(mediaElement);
     lightboxTitle.textContent = media.title;
@@ -105,3 +144,41 @@ function nextElement(mediaList, index) {
     changeMedia(mediaList, newIndex);
     currentIndex = newIndex; // Update the global index to the new value
 }
+
+function trapFocusInsideLightbox(event) {
+    if (event.key !== "Tab") return;
+
+    const focusableElems = Array.from(document.querySelector('.lightbox-content').querySelectorAll('[tabindex="0"]'));
+    const firstFocusableElem = focusableElems[0];
+    const lastFocusableElem = focusableElems[focusableElems.length - 1];
+
+    if (event.shiftKey && document.activeElement === firstFocusableElem) {
+        lastFocusableElem.focus();
+        event.preventDefault();
+    } else if (!event.shiftKey && document.activeElement === lastFocusableElem) {
+        firstFocusableElem.focus();
+        event.preventDefault();
+    }
+}
+
+const closeButton = document.getElementById('lightbox-close-button');
+closeButton.addEventListener('keydown', (event) => {
+    if (event.key === "Enter") {
+        closeLightbox();
+    }
+});
+
+const leftArrow = document.getElementById('lightbox-arrow-left');
+leftArrow.addEventListener('keydown', (event) => {
+    if (event.key === "Enter") {
+        previousElement(currentMediaList, currentIndex);
+    }
+});
+
+const rightArrow = document.getElementById('lightbox-arrow-right');
+rightArrow.addEventListener('keydown', (event) => {
+    if (event.key === "Enter") {
+        nextElement(currentMediaList, currentIndex);
+    }
+});
+
