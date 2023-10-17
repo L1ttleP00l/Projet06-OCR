@@ -100,6 +100,15 @@
     margin-bottom: -10px;
 }
 
+.close-button {
+    border: none;
+    background: none;
+}
+
+button:focus {
+    outline: none;
+}
+
 .modal header img {
     cursor: pointer;
     align-self: flex-start;
