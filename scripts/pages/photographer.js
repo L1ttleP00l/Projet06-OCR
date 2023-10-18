@@ -80,6 +80,8 @@ async function displayData(photographers) {
 
     const photographerModel = photographerTemplate(photographer);
     const userCardDOM = photographerModel.getUserCardDOM();
+
+    addPriceBox(photographer.price);
 }
 
 async function init() {
@@ -110,6 +112,9 @@ async function displayMedia(media) {
         const dataCardDOM = dataModel.getDataCardDOM();
         dataSection.appendChild(dataCardDOM);
     }
+
+    // Une fois que tous les médias sont traités, mettez à jour la box de total des likes.
+    updateTotalLikesBox(mediaItems);
 }
 
 function dataTemplate(mediaItem, mediaList, index) {
@@ -214,4 +219,41 @@ function dataTemplate(mediaItem, mediaList, index) {
     }
 
     return { getDataCardDOM };
+}
+
+function calculateTotalLikes(mediaItems) {
+    let totalLikes = 0;
+    mediaItems.forEach(item => {
+        totalLikes += item.likes; // Assurez-vous que les "likes" sont des nombres et non des chaînes de caractères.
+    });
+    return totalLikes;
+}
+
+function updateTotalLikesBox(mediaItems) {
+    const totalLikes = calculateTotalLikes(mediaItems);
+    const boxElement = document.querySelector('.box');
+    if (boxElement) {
+        // Création du conteneur pour le total des likes et l'icône.
+        const likesContainer = document.createElement('div');
+        likesContainer.classList.add('likes-container'); // Vous pouvez ajouter des styles via CSS à cette classe.
+
+        // Ajout du total des likes au conteneur.
+        const likesText = document.createElement('span');
+        likesText.textContent = `${totalLikes} `;
+        likesContainer.appendChild(likesText);
+
+        // Création et ajout de l'icône du cœur.
+        const heartIcon = document.createElement('i');
+        heartIcon.classList.add('fas', 'fa-heart');
+        likesContainer.appendChild(heartIcon);
+
+        boxElement.prepend(likesContainer);
+    }
+}
+
+function addPriceBox(price) {
+    const boxElement = document.querySelector('#price'); // Sélectionnez l'élément box dans le DOM.
+    if (boxElement) {
+        boxElement.textContent = `${price}€ / jour`; // Mettre à jour le contenu avec le total des likes.
+    }
 }
