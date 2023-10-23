@@ -74,17 +74,17 @@ async function displayMedia(media) {
     const dataSection = document.querySelector(".media");
 
     let id = new URL(document.location).searchParams.get('id');
-    
+
     let mediaItems = media.filter((item) => item.photographerId.toString() === id);
 
     for (let index = 0; index < mediaItems.length; index++) {
-        const mediaItem = mediaItems[index]
+        const mediaItem = mediaItems[index];
         const dataModel = dataTemplate(mediaItem, mediaItems, index);
         const dataCardDOM = dataModel.getDataCardDOM();
         dataSection.appendChild(dataCardDOM);
     }
 
-    updateTotalLikesBox(mediaItems);
+    updateTotalLikesCount(); // Appel initial pour mettre à jour le compteur total de likes
 }
 
 function dataTemplate(mediaItem, mediaList, index) {
@@ -100,13 +100,6 @@ function dataTemplate(mediaItem, mediaList, index) {
             imageElement.alt = title;
             imageElement.tabIndex = 0;
             imageElement.setAttribute("role", "button");
-
-            imageElement.addEventListener("click", () => openLightbox(imageElement.src, mediaList, index));
-            imageElement.addEventListener("keydown", (event) => {
-                if (event.key === "Enter") {
-                    openLightbox(imageElement.src, mediaList, index);
-                }
-            });
 
             const infoDiv = document.createElement("div");
             infoDiv.classList.add("media-info");
@@ -125,7 +118,7 @@ function dataTemplate(mediaItem, mediaList, index) {
             const likesIconElement = document.createElement("i");
             likesIconElement.classList.add("fas", "fa-heart");
 
-            function toggleLike() {
+            likeDiv.addEventListener("click", () => {
                 const currentLikes = parseInt(infoDiv.getAttribute("data-likes"));
                 const liked = infoDiv.getAttribute("data-liked") === "true";
 
@@ -140,10 +133,8 @@ function dataTemplate(mediaItem, mediaList, index) {
                 }
 
                 likesElement.textContent = `${parseInt(infoDiv.getAttribute("data-likes"))}`;
-                updateTotalLikesBox(mediaList);
-            }
-
-            likeDiv.addEventListener("click", toggleLike);
+                updateTotalLikesCount(); // Mettre à jour le compteur total de likes
+            });
 
             infoDiv.appendChild(imageNameElement);
             infoDiv.appendChild(likeDiv);
@@ -152,19 +143,16 @@ function dataTemplate(mediaItem, mediaList, index) {
 
             mediaContainer.appendChild(imageElement);
             mediaContainer.appendChild(infoDiv);
+
+            // Ajouter le gestionnaire de clic pour ouvrir la lightbox
+            imageElement.addEventListener("click", () => openLightbox(imageElement.src, mediaList, index));
+
         } else if (video) {
             const videoElement = document.createElement("video");
             videoElement.src = `assets/images/${photographerId}/${video}`;
-            videoElement.controls = true;
+            videoElement.controls = false;
             videoElement.tabIndex = 0;
             videoElement.setAttribute("role", "button");
-
-            videoElement.addEventListener("click", () => openLightbox(videoElement.src, mediaList, index));
-            videoElement.addEventListener("keydown", (event) => {
-                if (event.key === "Enter") {
-                    openLightbox(videoElement.src, mediaList, index);
-                }
-            });
 
             const infoDiv = document.createElement("div");
             infoDiv.classList.add("media-info");
@@ -183,7 +171,7 @@ function dataTemplate(mediaItem, mediaList, index) {
             const likesIconElement = document.createElement("i");
             likesIconElement.classList.add("fas", "fa-heart");
 
-            function toggleLike() {
+            likeDiv.addEventListener("click", () => {
                 const currentLikes = parseInt(infoDiv.getAttribute("data-likes"));
                 const liked = infoDiv.getAttribute("data-liked") === "true";
 
@@ -198,10 +186,8 @@ function dataTemplate(mediaItem, mediaList, index) {
                 }
 
                 likesElement.textContent = `${parseInt(infoDiv.getAttribute("data-likes"))}`;
-                updateTotalLikesBox(mediaList);
-            }
-
-            likeDiv.addEventListener("click", toggleLike);
+                updateTotalLikesCount(); // Mettre à jour le compteur total de likes
+            });
 
             infoDiv.appendChild(videoNameElement);
             infoDiv.appendChild(likeDiv);
@@ -210,6 +196,9 @@ function dataTemplate(mediaItem, mediaList, index) {
 
             mediaContainer.appendChild(videoElement);
             mediaContainer.appendChild(infoDiv);
+
+            // Ajouter le gestionnaire de clic pour ouvrir la lightbox
+            videoElement.addEventListener("click", () => openLightbox(videoElement.src, mediaList, index));
         }
 
         return mediaContainer;
@@ -251,5 +240,22 @@ function addPriceBox(price) {
     const boxElement = document.querySelector('#price');
     if (boxElement) {
         boxElement.textContent = `${price}€ / jour`;
+    }
+}
+
+let totalLikesCount = 0;
+
+function updateTotalLikesCount() {
+    const mediaItems = document.querySelectorAll(".media-info");
+    let newTotalLikesCount = 0;
+
+    mediaItems.forEach((mediaItem) => {
+        newTotalLikesCount += parseInt(mediaItem.getAttribute("data-likes"));
+    });
+
+    totalLikesCount = newTotalLikesCount;
+    const totalLikesElement = document.getElementById("totallikes");
+    if (totalLikesElement) {
+        totalLikesElement.innerHTML = `${totalLikesCount} likes <i class="fas fa-heart"></i>`;
     }
 }
