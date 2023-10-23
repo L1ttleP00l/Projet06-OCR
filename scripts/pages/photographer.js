@@ -7,7 +7,6 @@ function photographerTemplate(data) {
 
     function getUserCardDOM() {
         let menu = document.getElementsByClassName("photograph-header")[0];
-        // let button = document.getElementsByClassName("contact_button")[0];
         const div = document.createElement('div');
         div.setAttribute("class","text");
         const img = document.createElement('img');
@@ -19,42 +18,25 @@ function photographerTemplate(data) {
         pcity.setAttribute("class", "city")
         const ptagline = document.createElement('p')
         ptagline.setAttribute("class", "tagline")
-        // const pprice = document.createElement('p')
-        // pprice.setAttribute("class", "price")
         h2.textContent = name;
         pcity.textContent = city + ", " + country
         ptagline.textContent = tagline
-        // pprice.textContent = price + "€/jour"
         menu.prepend(div)
         menu.append(img)
-        // div.appendChild(img);
         div.appendChild(h2);
         div.appendChild(pcity);
         div.appendChild(ptagline);
-        // div.appendChild(pprice);
         
         // Adds the photographer's name to the browser tab
         document.title = "Fisheye - " + (name.split('')[0]) + ". " + (name.split(' ')[1]);
 
         document.getElementById("contact").innerText = "Contactez-moi\n" + name;
 
-        // var contactHeader = document.getElementById("contact"); // Récupère l'élément h2 par son ID
-
-        // var paragraphElement = document.createElement("h2");
-        // paragraphElement.textContent = name; // Remplacez "Votre texte ici" par le texte que vous souhaitez ajouter
-
-        // contactHeader.insertAdjacentElement("afterend", paragraphElement);
-
-
-
         return (div);
     }
     return { name, picture, getUserCardDOM }
 }
 
-
-
-// Retrieves photographer information from the file "photographers.json"
 async function getPhotographers() {
     try {
         const response = await fetch("data/photographers.json");
@@ -70,13 +52,9 @@ async function getPhotographers() {
 
 async function displayData(photographers) {
     const photographersSection = document.querySelector(".photograph-header");
-    // console.table(photographers)
     
     let id = new URL(document.location).searchParams.get('id');
-    // console.log(id)
-
     let photographer = photographers.find((photographer) => photographer.id.toString() === id);
-    // console.log(photographer);
 
     const photographerModel = photographerTemplate(photographer);
     const userCardDOM = photographerModel.getUserCardDOM();
@@ -85,25 +63,18 @@ async function displayData(photographers) {
 }
 
 async function init() {
-    // Recovers data from photographers
     const { photographers, media } = await getPhotographers();
-    // Recovers media from photographers
-    // console.table(photographers);
-    // console.table(media);
     displayData(photographers);
     displayMedia(media);
 }
 
 init();
 
-
 async function displayMedia(media) {
     const dataSection = document.querySelector(".media");
 
-    // Get photographer ID from URL
     let id = new URL(document.location).searchParams.get('id');
     
-    // Find the corresponding media whose "photographerId" corresponds to the photographer's ID
     let mediaItems = media.filter((item) => item.photographerId.toString() === id);
 
     for (let index = 0; index < mediaItems.length; index++) {
@@ -113,7 +84,6 @@ async function displayMedia(media) {
         dataSection.appendChild(dataCardDOM);
     }
 
-    // Une fois que tous les médias sont traités, mettez à jour la box de total des likes.
     updateTotalLikesBox(mediaItems);
 }
 
@@ -124,9 +94,7 @@ function dataTemplate(mediaItem, mediaList, index) {
         const mediaContainer = document.createElement("div");
         mediaContainer.classList.add("media-item");
 
-
         if (image) {
-            // If it's an image, create an <img> element
             const imageElement = document.createElement("img");
             imageElement.src = `assets/images/${photographerId}/${image}`;
             imageElement.alt = title;
@@ -139,41 +107,55 @@ function dataTemplate(mediaItem, mediaList, index) {
                     openLightbox(imageElement.src, mediaList, index);
                 }
             });
-            mediaContainer.appendChild(imageElement);
 
-            // Create a div for the title and likes
             const infoDiv = document.createElement("div");
             infoDiv.classList.add("media-info");
+            infoDiv.setAttribute("data-likes", likes);
+            infoDiv.setAttribute("data-liked", "false");
 
-            // Add image name
             const imageNameElement = document.createElement("p");
             imageNameElement.textContent = title;
 
-            // Create a div for likes and the icon
             const likeDiv = document.createElement("div");
             likeDiv.classList.add("like");
 
-            // Adds the number of likes
             const likesElement = document.createElement("p");
             likesElement.textContent = `${likes}`;
 
-            // Adds Font Awesome icon for likes
             const likesIconElement = document.createElement("i");
             likesIconElement.classList.add("fas", "fa-heart");
 
-            // Adds title and likes to info div
+            function toggleLike() {
+                const currentLikes = parseInt(infoDiv.getAttribute("data-likes"));
+                const liked = infoDiv.getAttribute("data-liked") === "true";
+
+                if (liked) {
+                    // Retirer un like
+                    infoDiv.setAttribute("data-likes", currentLikes - 1);
+                    infoDiv.setAttribute("data-liked", "false");
+                } else {
+                    // Ajouter un like
+                    infoDiv.setAttribute("data-likes", currentLikes + 1);
+                    infoDiv.setAttribute("data-liked", "true");
+                }
+
+                likesElement.textContent = `${parseInt(infoDiv.getAttribute("data-likes"))}`;
+                updateTotalLikesBox(mediaList);
+            }
+
+            likeDiv.addEventListener("click", toggleLike);
+
             infoDiv.appendChild(imageNameElement);
             infoDiv.appendChild(likeDiv);
             likeDiv.appendChild(likesElement);
             likeDiv.appendChild(likesIconElement);
 
-            // Adds the information div to the main container
+            mediaContainer.appendChild(imageElement);
             mediaContainer.appendChild(infoDiv);
         } else if (video) {
-            // If it's a video, create a <video> element
             const videoElement = document.createElement("video");
             videoElement.src = `assets/images/${photographerId}/${video}`;
-            videoElement.controls = false;
+            videoElement.controls = true;
             videoElement.tabIndex = 0;
             videoElement.setAttribute("role", "button");
 
@@ -183,35 +165,50 @@ function dataTemplate(mediaItem, mediaList, index) {
                     openLightbox(videoElement.src, mediaList, index);
                 }
             });
-            mediaContainer.appendChild(videoElement);
 
-            // Create a div for likes and the icon
             const infoDiv = document.createElement("div");
             infoDiv.classList.add("media-info");
+            infoDiv.setAttribute("data-likes", likes);
+            infoDiv.setAttribute("data-liked", "false");
 
-            // Add video name
             const videoNameElement = document.createElement("p");
             videoNameElement.textContent = title;
 
-            // Create a div for likes and the icon
             const likeDiv = document.createElement("div");
             likeDiv.classList.add("like");
 
-            // Adds the number of likes
             const likesElement = document.createElement("p");
             likesElement.textContent = `${likes}`;
 
-            // Adds Font Awesome icon for likes
             const likesIconElement = document.createElement("i");
             likesIconElement.classList.add("fas", "fa-heart");
 
-            // Adds title and likes to info div
+            function toggleLike() {
+                const currentLikes = parseInt(infoDiv.getAttribute("data-likes"));
+                const liked = infoDiv.getAttribute("data-liked") === "true";
+
+                if (liked) {
+                    // Retirer un like
+                    infoDiv.setAttribute("data-likes", currentLikes - 1);
+                    infoDiv.setAttribute("data-liked", "false");
+                } else {
+                    // Ajouter un like
+                    infoDiv.setAttribute("data-likes", currentLikes + 1);
+                    infoDiv.setAttribute("data-liked", "true");
+                }
+
+                likesElement.textContent = `${parseInt(infoDiv.getAttribute("data-likes"))}`;
+                updateTotalLikesBox(mediaList);
+            }
+
+            likeDiv.addEventListener("click", toggleLike);
+
             infoDiv.appendChild(videoNameElement);
             infoDiv.appendChild(likeDiv);
             likeDiv.appendChild(likesElement);
             likeDiv.appendChild(likesIconElement);
 
-            // Adds the information div to the main container
+            mediaContainer.appendChild(videoElement);
             mediaContainer.appendChild(infoDiv);
         }
 
@@ -221,10 +218,12 @@ function dataTemplate(mediaItem, mediaList, index) {
     return { getDataCardDOM };
 }
 
+
+
 function calculateTotalLikes(mediaItems) {
     let totalLikes = 0;
     mediaItems.forEach(item => {
-        totalLikes += item.likes; // Assurez-vous que les "likes" sont des nombres et non des chaînes de caractères.
+        totalLikes += item.likes;
     });
     return totalLikes;
 }
@@ -233,16 +232,13 @@ function updateTotalLikesBox(mediaItems) {
     const totalLikes = calculateTotalLikes(mediaItems);
     const boxElement = document.querySelector('.box');
     if (boxElement) {
-        // Création du conteneur pour le total des likes et l'icône.
         const likesContainer = document.createElement('div');
-        likesContainer.classList.add('likes-container'); // Vous pouvez ajouter des styles via CSS à cette classe.
+        likesContainer.classList.add('likes-container');
 
-        // Ajout du total des likes au conteneur.
         const likesText = document.createElement('span');
         likesText.textContent = `${totalLikes} `;
         likesContainer.appendChild(likesText);
 
-        // Création et ajout de l'icône du cœur.
         const heartIcon = document.createElement('i');
         heartIcon.classList.add('fas', 'fa-heart');
         likesContainer.appendChild(heartIcon);
@@ -252,8 +248,8 @@ function updateTotalLikesBox(mediaItems) {
 }
 
 function addPriceBox(price) {
-    const boxElement = document.querySelector('#price'); // Sélectionnez l'élément box dans le DOM.
+    const boxElement = document.querySelector('#price');
     if (boxElement) {
-        boxElement.textContent = `${price}€ / jour`; // Mettre à jour le contenu avec le total des likes.
+        boxElement.textContent = `${price}€ / jour`;
     }
 }
