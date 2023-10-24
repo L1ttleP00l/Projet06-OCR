@@ -94,6 +94,9 @@ function dataTemplate(mediaItem, mediaList, index) {
         const mediaContainer = document.createElement("div");
         mediaContainer.classList.add("media-item");
 
+        // Ajoutez un attribut "data-date" avec la date depuis le JSON
+        mediaContainer.setAttribute("data-date", date);
+
         if (image) {
             const imageElement = document.createElement("img");
             imageElement.src = `assets/images/${photographerId}/${image}`;
@@ -271,3 +274,55 @@ function updateTotalLikesCount() {
         totalLikesElement.innerHTML = `${totalLikesCount} likes <i class="fas fa-heart"></i>`;
     }
 }
+
+
+
+
+
+
+// Sélectionnez l'élément <select>
+const photoFilterSelect = document.getElementById("photoFilter");
+
+// Sélectionnez la section contenant les éléments multimédias
+const mediaSection = document.querySelector(".media");
+
+// Écoutez les changements de sélection dans le <select>
+photoFilterSelect.addEventListener("change", () => {
+    // Obtenez la valeur sélectionnée
+    const selectedValue = photoFilterSelect.value;
+
+    // Obtenez tous les éléments multimédias
+    const mediaItems = Array.from(mediaSection.querySelectorAll(".media-item"));
+
+    // Triez les éléments multimédias en fonction de la valeur sélectionnée
+    if (selectedValue === "popularity") {
+        // Triez par popularité (nombre de likes)
+        mediaItems.sort((a, b) => {
+            const likesA = parseInt(a.querySelector(".media-info").getAttribute("data-likes"));
+            const likesB = parseInt(b.querySelector(".media-info").getAttribute("data-likes"));
+            return likesB - likesA;
+        });
+    } else if (selectedValue === "date") {
+        // Triez par date (ordre de création)
+        mediaItems.sort((a, b) => {
+            const dateA = new Date(a.getAttribute("data-date")); // Assurez-vous que "data-date" est correctement défini dans votre JSON
+            const dateB = new Date(b.getAttribute("data-date")); // Assurez-vous que "data-date" est correctement défini dans votre JSON
+            return dateB - dateA; // Triez du plus récent au plus ancien
+        });
+    } else if (selectedValue === "title") {
+        // Triez par titre
+        mediaItems.sort((a, b) => {
+            const titleA = a.querySelector("p").textContent;
+            const titleB = b.querySelector("p").textContent;
+            return titleA.localeCompare(titleB);
+        });
+    }
+
+    // Supprimez les éléments multimédias existants
+    mediaSection.innerHTML = "";
+
+    // Ajoutez les éléments multimédias triés à la section
+    mediaItems.forEach((mediaItem) => {
+        mediaSection.appendChild(mediaItem);
+    });
+});
