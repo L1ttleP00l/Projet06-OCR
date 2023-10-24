@@ -101,6 +101,13 @@ function dataTemplate(mediaItem, mediaList, index) {
             imageElement.tabIndex = 0;
             imageElement.setAttribute("role", "button");
 
+            // Ajoutez le gestionnaire d'événements pour la touche "Entrée" ici
+            imageElement.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    openLightbox(imageElement.src, mediaList, index);
+                }
+            });
+
             const infoDiv = document.createElement("div");
             infoDiv.classList.add("media-info");
             infoDiv.setAttribute("data-likes", likes);
@@ -154,6 +161,13 @@ function dataTemplate(mediaItem, mediaList, index) {
             videoElement.tabIndex = 0;
             videoElement.setAttribute("role", "button");
 
+            // Ajoutez le gestionnaire d'événements pour la touche "Entrée" ici
+            videoElement.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    openLightbox(videoElement.src, mediaList, index);
+                }
+            });
+
             const infoDiv = document.createElement("div");
             infoDiv.classList.add("media-info");
             infoDiv.setAttribute("data-likes", likes);
@@ -206,8 +220,6 @@ function dataTemplate(mediaItem, mediaList, index) {
 
     return { getDataCardDOM };
 }
-
-
 
 function calculateTotalLikes(mediaItems) {
     let totalLikes = 0;
