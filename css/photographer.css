@@ -1,7 +1,9 @@
+/* Hide the contact modal by default */
 #contact_modal {
     display: none;
 }
 
+/* Photographer Header Styles */
 .photograph-header {
     display: flex;
     justify-content: space-between;
@@ -12,10 +14,10 @@
     padding: 0 50px;
 }
 
+/* Additional styles for the header */
 .photograph-header div {
     display: flex;
     flex-direction: column;
-    /* gap: 20px; */
 }
 
 .photograph-header img {
@@ -46,6 +48,7 @@
     margin: 15px 0 0 0;
 }
 
+/* Contact button styles */
 .contact_button {
     font-size: 1.1rem;
     font-weight: bold;
@@ -63,9 +66,10 @@
 
 .contact_button:hover {
     cursor: pointer;
-    filter:drop-shadow(0 0 0.5rem #D3573C)
+    filter: drop-shadow(0 0 0.5rem #D3573C);
 }
 
+/* Contact Modal Styles */
 #contact_modal {
     width: 100%;
     height: 100%;
@@ -78,9 +82,10 @@
     backdrop-filter: blur(5px);
 }
 
+/* Filter Styles */
 .filter {
     display: flex;
-    flex-direction:row;
+    flex-direction: row;
     align-items: center;
     gap: 25px;
     margin: 10px 100px;
@@ -90,6 +95,7 @@
     font-weight: 800;
 }
 
+/* Dropdown select styles */
 .filter select {
     text-align: center;
     font-size: 1.1rem;
@@ -102,6 +108,7 @@
     border-radius: 5px;
 }
 
+/* Contact Modal Styles */
 .modal {
     border-radius: 5px;
     background-color: #DB8876;
@@ -151,6 +158,7 @@ button:focus {
     max-height: 160px;
 }
 
+/* Form Styles */
 form {
     display: flex;
     width: 100%;
@@ -188,6 +196,7 @@ form textarea {
     font-size: 1.5rem;
 }
 
+/* Media Grid Styles */
 .media {
     display: grid;
     grid-template-columns: auto auto auto;
@@ -197,6 +206,7 @@ form textarea {
     margin: 50px 100px 0px 100px;
 }
 
+/* Media Item Styles */
 .media-item {
     width: 21.875rem;
     height: 18.75rem;
@@ -205,7 +215,7 @@ form textarea {
 
 .media-item:hover {
     cursor: pointer;
-    filter:drop-shadow(0 0 0.5rem #D3573C);
+    filter: drop-shadow(0 0 0.5rem #D3573C);
 }
 
 .media-item div {
@@ -220,23 +230,18 @@ form textarea {
 
 .media-item div div {
     width: 12%;
-    /* gap: 5px; */
 }
 
-/* Styles for the pictures */
-.media-item img, video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 5px;
+/* Media Item Image/Video Styles */
+.media-item img,
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
 }
 
-/* main {
-    gap: 100px;
-    display: flex;
-    flex-direction: column;
-} */
-
+/* Box Styles */
 .box {
     display: flex;
     background-color: #D3573C;
@@ -257,6 +262,7 @@ form textarea {
     color: black;
 }
 
+/* Lightbox Overlay Styles */
 .lightbox-overlay {
     display: none;
     position: fixed;
@@ -268,6 +274,7 @@ form textarea {
     z-index: 1;
 }
 
+/* Lightbox Content Styles */
 .lightbox-content {
     display: none;
     position: absolute;
@@ -281,16 +288,15 @@ form textarea {
     border-radius: 0.75%;
 }
 
-/* .lightbox-overlay:focus {
-    background: transparent;
-} */
-
-.lightbox-content img, video {
+/* Lightbox Image/Video Styles */
+.lightbox-content img,
+video {
     max-width: 100%;
     max-height: 80vh;
     border-radius: 0.75%;
 }
 
+/* Lightbox Title Styles */
 #lightbox-title {
     color: #901C1C;
     font-size: 1rem;
@@ -298,6 +304,7 @@ form textarea {
     margin: 10px 0 5px 0;
 }
 
+/* Additional Styles for Icons */
 i {
     color: #901C1C;
 }

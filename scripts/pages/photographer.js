@@ -1,35 +1,38 @@
-//Mettre le code JavaScript lié à la page photographer.html
+// JavaScript code for photographer.html page
 
+// Function to generate photographer's section
 function photographerTemplate(data) {
     const { name, id, city, country, tagline, price, portrait } = data;
 
+    // Construct the path for the photographer's portrait image
     const picture = `assets/photographers/${portrait}`;
 
     function getUserCardDOM() {
         let menu = document.getElementsByClassName("photograph-header")[0];
         const div = document.createElement('div');
-        div.setAttribute("class","text");
+        div.setAttribute("class", "text");
         const img = document.createElement('img');
-        img.setAttribute("src", picture)
-        img.setAttribute("alt", "Portrait de " + name)
-        img.setAttribute("aria-label", "Sélection du photographe " + name)
+        img.setAttribute("src", picture);
+        img.setAttribute("alt", "Portrait of " + name);
+        img.setAttribute("aria-label", "Sélection du photographe " + name);
         const h2 = document.createElement('h2');
         const pcity = document.createElement('p');
-        pcity.setAttribute("class", "city")
-        const ptagline = document.createElement('p')
-        ptagline.setAttribute("class", "tagline")
+        pcity.setAttribute("class", "city");
+        const ptagline = document.createElement('p');
+        ptagline.setAttribute("class", "tagline");
         h2.textContent = name;
-        pcity.textContent = city + ", " + country
-        ptagline.textContent = tagline
+        pcity.textContent = city + ", " + country;
+        ptagline.textContent = tagline;
         menu.prepend(div)
         menu.append(img)
         div.appendChild(h2);
         div.appendChild(pcity);
         div.appendChild(ptagline);
-        
-        // Adds the photographer's name to the browser tab
+
+        // Add photographer's name to the browser tab
         document.title = "Fisheye - " + (name.split('')[0]) + ". " + (name.split(' ')[1]);
 
+        // Update the "Contact me" button with photographer's name
         document.getElementById("contact").innerText = "Contactez-moi\n" + name;
 
         return (div);
@@ -37,6 +40,7 @@ function photographerTemplate(data) {
     return { name, picture, getUserCardDOM }
 }
 
+// Function to fetch photographers' data from JSON
 async function getPhotographers() {
     try {
         const response = await fetch("data/photographers.json");
@@ -50,18 +54,22 @@ async function getPhotographers() {
     }
 }
 
+// Function to display photographer's data on the page
 async function displayData(photographers) {
     const photographersSection = document.querySelector(".photograph-header");
-    
+
+    // Get photographer's ID from URL query parameter
     let id = new URL(document.location).searchParams.get('id');
     let photographer = photographers.find((photographer) => photographer.id.toString() === id);
 
     const photographerModel = photographerTemplate(photographer);
     const userCardDOM = photographerModel.getUserCardDOM();
 
+    // Add the photographer's price to the price box
     addPriceBox(photographer.price);
 }
 
+// Initialize the page
 async function init() {
     const { photographers, media } = await getPhotographers();
     displayData(photographers);
@@ -70,11 +78,14 @@ async function init() {
 
 init();
 
+// Function to display photographer's media on the page
 async function displayMedia(media) {
     const dataSection = document.querySelector(".media");
 
+    // Get photographer's ID from URL query parameter
     let id = new URL(document.location).searchParams.get('id');
 
+    // Filter media items by photographer's ID
     let mediaItems = media.filter((item) => item.photographerId.toString() === id);
 
     for (let index = 0; index < mediaItems.length; index++) {
@@ -84,9 +95,11 @@ async function displayMedia(media) {
         dataSection.appendChild(dataCardDOM);
     }
 
-    updateTotalLikesCount(); // Appel initial pour mettre à jour le compteur total de likes
+    // Initial call to update the total likes count
+    updateTotalLikesCount();
 }
 
+// Function to generate HTML for media items
 function dataTemplate(mediaItem, mediaList, index) {
     const { id, photographerId, title, image, video, likes, date, price } = mediaItem;
 
@@ -94,7 +107,7 @@ function dataTemplate(mediaItem, mediaList, index) {
         const mediaContainer = document.createElement("div");
         mediaContainer.classList.add("media-item");
 
-        // Ajoutez un attribut "data-date" avec la date depuis le JSON
+        // Add a "data-date" attribute with the date from JSON
         mediaContainer.setAttribute("data-date", date);
 
         if (image) {
@@ -103,8 +116,9 @@ function dataTemplate(mediaItem, mediaList, index) {
             imageElement.alt = title;
             imageElement.tabIndex = 0;
             imageElement.setAttribute("role", "button");
+            imageElement.setAttribute("aria-label", `Image : ${title}`);
 
-            // Ajoutez le gestionnaire d'événements pour la touche "Entrée" ici
+            // Add event listener for "Enter" key to open the lightbox
             imageElement.addEventListener("keydown", (event) => {
                 if (event.key === "Enter") {
                     openLightbox(imageElement.src, mediaList, index);
@@ -133,17 +147,17 @@ function dataTemplate(mediaItem, mediaList, index) {
                 const liked = infoDiv.getAttribute("data-liked") === "true";
 
                 if (liked) {
-                    // Retirer un like
+                    // Remove a like
                     infoDiv.setAttribute("data-likes", currentLikes - 1);
                     infoDiv.setAttribute("data-liked", "false");
                 } else {
-                    // Ajouter un like
+                    // Add a like
                     infoDiv.setAttribute("data-likes", currentLikes + 1);
                     infoDiv.setAttribute("data-liked", "true");
                 }
 
                 likesElement.textContent = `${parseInt(infoDiv.getAttribute("data-likes"))}`;
-                updateTotalLikesCount(); // Mettre à jour le compteur total de likes
+                updateTotalLikesCount(); // Update the total likes count
             });
 
             infoDiv.appendChild(imageNameElement);
@@ -154,7 +168,7 @@ function dataTemplate(mediaItem, mediaList, index) {
             mediaContainer.appendChild(imageElement);
             mediaContainer.appendChild(infoDiv);
 
-            // Ajouter le gestionnaire de clic pour ouvrir la lightbox
+            // Add click event handler to open the lightbox
             imageElement.addEventListener("click", () => openLightbox(imageElement.src, mediaList, index));
 
         } else if (video) {
@@ -163,8 +177,9 @@ function dataTemplate(mediaItem, mediaList, index) {
             videoElement.controls = false;
             videoElement.tabIndex = 0;
             videoElement.setAttribute("role", "button");
+            videoElement.setAttribute("aria-label", `Vidéo : ${title}`);
 
-            // Ajoutez le gestionnaire d'événements pour la touche "Entrée" ici
+            // Add event listener for "Enter" key to open the lightbox
             videoElement.addEventListener("keydown", (event) => {
                 if (event.key === "Enter") {
                     openLightbox(videoElement.src, mediaList, index);
@@ -193,17 +208,17 @@ function dataTemplate(mediaItem, mediaList, index) {
                 const liked = infoDiv.getAttribute("data-liked") === "true";
 
                 if (liked) {
-                    // Retirer un like
+                    // Remove a like
                     infoDiv.setAttribute("data-likes", currentLikes - 1);
                     infoDiv.setAttribute("data-liked", "false");
                 } else {
-                    // Ajouter un like
+                    // Add a like
                     infoDiv.setAttribute("data-likes", currentLikes + 1);
                     infoDiv.setAttribute("data-liked", "true");
                 }
 
                 likesElement.textContent = `${parseInt(infoDiv.getAttribute("data-likes"))}`;
-                updateTotalLikesCount(); // Mettre à jour le compteur total de likes
+                updateTotalLikesCount(); // Update the total likes count
             });
 
             infoDiv.appendChild(videoNameElement);
@@ -214,7 +229,7 @@ function dataTemplate(mediaItem, mediaList, index) {
             mediaContainer.appendChild(videoElement);
             mediaContainer.appendChild(infoDiv);
 
-            // Ajouter le gestionnaire de clic pour ouvrir la lightbox
+            // Add click event handler to open the lightbox
             videoElement.addEventListener("click", () => openLightbox(videoElement.src, mediaList, index));
         }
 
@@ -224,6 +239,7 @@ function dataTemplate(mediaItem, mediaList, index) {
     return { getDataCardDOM };
 }
 
+// Function to calculate the total number of likes
 function calculateTotalLikes(mediaItems) {
     let totalLikes = 0;
     mediaItems.forEach(item => {
@@ -232,6 +248,7 @@ function calculateTotalLikes(mediaItems) {
     return totalLikes;
 }
 
+// Function to update the total likes box
 function updateTotalLikesBox(mediaItems) {
     const totalLikes = calculateTotalLikes(mediaItems);
     const boxElement = document.querySelector('.box');
@@ -251,15 +268,18 @@ function updateTotalLikesBox(mediaItems) {
     }
 }
 
+// Function to add price information
 function addPriceBox(price) {
     const boxElement = document.querySelector('#price');
     if (boxElement) {
-        boxElement.textContent = `${price}€ / jour`;
+        boxElement.textContent = `${price}€ / day`;
     }
 }
 
+// Variable to store total likes count
 let totalLikesCount = 0;
 
+// Function to update the total likes count
 function updateTotalLikesCount() {
     const mediaItems = document.querySelectorAll(".media-info");
     let newTotalLikesCount = 0;
@@ -275,42 +295,37 @@ function updateTotalLikesCount() {
     }
 }
 
-
-
-
-
-
-// Sélectionnez l'élément <select>
+// Select the <select> element
 const photoFilterSelect = document.getElementById("photoFilter");
 
-// Sélectionnez la section contenant les éléments multimédias
+// Select the section containing media items
 const mediaSection = document.querySelector(".media");
 
-// Écoutez les changements de sélection dans le <select>
+// Listen for changes in the <select>
 photoFilterSelect.addEventListener("change", () => {
-    // Obtenez la valeur sélectionnée
+    // Get the selected value
     const selectedValue = photoFilterSelect.value;
 
-    // Obtenez tous les éléments multimédias
+    // Get all media items
     const mediaItems = Array.from(mediaSection.querySelectorAll(".media-item"));
 
-    // Triez les éléments multimédias en fonction de la valeur sélectionnée
+    // Sort media items based on the selected value
     if (selectedValue === "popularity") {
-        // Triez par popularité (nombre de likes)
+        // Sort by popularity (number of likes)
         mediaItems.sort((a, b) => {
             const likesA = parseInt(a.querySelector(".media-info").getAttribute("data-likes"));
             const likesB = parseInt(b.querySelector(".media-info").getAttribute("data-likes"));
             return likesB - likesA;
         });
     } else if (selectedValue === "date") {
-        // Triez par date (ordre de création)
+        // Sort by date (creation order)
         mediaItems.sort((a, b) => {
-            const dateA = new Date(a.getAttribute("data-date")); // Assurez-vous que "data-date" est correctement défini dans votre JSON
-            const dateB = new Date(b.getAttribute("data-date")); // Assurez-vous que "data-date" est correctement défini dans votre JSON
-            return dateB - dateA; // Triez du plus récent au plus ancien
+            const dateA = new Date(a.getAttribute("data-date")); // Make sure "data-date" is correctly defined in your JSON
+            const dateB = new Date(b.getAttribute("data-date")); // Make sure "data-date" is correctly defined in your JSON
+            return dateB - dateA; // Sort from newest to oldest
         });
     } else if (selectedValue === "title") {
-        // Triez par titre
+        // Sort by title
         mediaItems.sort((a, b) => {
             const titleA = a.querySelector("p").textContent;
             const titleB = b.querySelector("p").textContent;
@@ -318,10 +333,10 @@ photoFilterSelect.addEventListener("change", () => {
         });
     }
 
-    // Supprimez les éléments multimédias existants
+    // Remove existing media items
     mediaSection.innerHTML = "";
 
-    // Ajoutez les éléments multimédias triés à la section
+    // Add sorted media items to the section
     mediaItems.forEach((mediaItem) => {
         mediaSection.appendChild(mediaItem);
     });

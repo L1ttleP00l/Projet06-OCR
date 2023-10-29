@@ -1,29 +1,31 @@
+// Function to display the modal
 function displayModal() {
   const modal = document.getElementById('contact_modal');
   modal.style.display = 'block';
 
-  // Désactiver le défilement sur le body lorsque la modale est ouverte.
+  // Disable scrolling on the body when the modal is open.
   document.body.style.overflow = 'hidden';
 
-  // Appel de la fonction pour piéger le focus dans la modale.
+  // Call the function to trap focus within the modal.
   trapFocus(modal);
 
-  // Ajout de l'écouteur pour les clics à l'extérieur de la modale et la touche 'Echap'.
+  // Add event listeners for clicks outside the modal and the 'Escape' key.
   window.addEventListener('click', handleWindowClick);
   window.addEventListener('keydown', handleEscapeClick);
 }
 
+// Function to trap focus within the modal
 function trapFocus(modal) {
   const focusableContent = modal.querySelectorAll('a[href], button, textarea, input[type="text"], input[type="email"], input[type="password"], input[type="submit"]');
-  const firstFocusableElement = focusableContent[0]; 
+  const firstFocusableElement = focusableContent[0];
   const lastFocusableElement = focusableContent[focusableContent.length - 1];
 
-  // Si aucun élément focusable n'est trouvé, sortez de la fonction.
+  // If no focusable elements are found, exit the function.
   if (!firstFocusableElement) {
     return;
   }
 
-  // Mettez le focus sur le premier élément focusable.
+  // Set focus to the first focusable element.
   firstFocusableElement.focus();
 
   modal.addEventListener('keydown', function(e) {
@@ -33,12 +35,12 @@ function trapFocus(modal) {
       return;
     }
 
-    if (e.shiftKey) { // Si la touche majuscule est enfoncée pendant que 'Tab' est pressé
+    if (e.shiftKey) { // If the Shift key is pressed while 'Tab' is pressed
       if (document.activeElement === firstFocusableElement) {
         lastFocusableElement.focus();
         e.preventDefault();
       }
-    } else { // Si la touche majuscule n'est pas enfoncée
+    } else { // If the Shift key is not pressed
       if (document.activeElement === lastFocusableElement) {
         firstFocusableElement.focus();
         e.preventDefault();
@@ -47,44 +49,47 @@ function trapFocus(modal) {
   });
 }
 
+// Function to handle clicks outside the modal
 function handleWindowClick(event) {
   const modal = document.getElementById('contact_modal');
 
-  // Vérifiez si le clic a été fait à l'extérieur de la modale.
+  // Check if the click was made outside the modal.
   if (event.target === modal) {
     closeModal();
   }
 }
 
+// Function to handle the 'Escape' key press
 function handleEscapeClick(event) {
   if (event.key === 'Escape') {
     closeModal();
   }
 }
 
+// Function to close the modal
 function closeModal() {
   const modal = document.getElementById('contact_modal');
   modal.style.display = 'none';
 
-  // Réactiver le défilement sur le body lorsque la modale est fermée.
+  // Re-enable scrolling on the body when the modal is closed.
   document.body.style.overflow = 'auto';
 
-  // Réactiver le focus pour les éléments hors de la modale.
+  // Re-enable focus for elements outside of the modal.
   document.querySelectorAll('a, button, input, textarea, video').forEach(elem => {
     elem.removeAttribute('tabindex');
   });
 
-  // Supprimer les écouteurs d'événements.
+  // Remove event listeners.
   window.removeEventListener('click', handleWindowClick);
   window.removeEventListener('keydown', handleEscapeClick);
 }
 
-// Ajouter des écouteurs d'événements au formulaire de contact et au bouton d'ouverture de la modale.
+// Add event listeners to the modal open button and the contact form.
 document.querySelector('.contact_button').addEventListener('click', displayModal);
 document.getElementById("contactForm").addEventListener("submit", function(event) {
   event.preventDefault();
 
-  // [Votre logique de traitement du formulaire]
+  // [Your form handling logic]
 
   closeModal();
 });

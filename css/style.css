@@ -1,11 +1,13 @@
+/* Import the photographer.css file */
 @import url("photographer.css");
 
+/* Reset the margin of the body and set the default font family */
 body {
     font-family: "DM Sans", sans-serif;
     margin: 0;
 }
 
-
+/* Styles for the header */
 header {
     display: flex;
     flex-direction: row;
@@ -14,20 +16,21 @@ header {
     height: 90px;
 }
 
+/* Styles for the title */
 h1 {
     color: #901C1C;
     margin-right: 100px;
     font-weight: 100;
 }
 
+/* Styles for the logo */
 .logo {
     height: 3.125rem;
     margin-left: 100px;
 }
 
+/* Styles for the photographers section */
 .photographer_section {
-    /* display: grid;
-    grid-template-columns: 1fr 1fr 1fr; */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -35,16 +38,17 @@ h1 {
     margin-top: 6.25rem;
 }
 
+/* Styles for photographer articles */
 .photographer_section article {
     justify-self: center;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    /* Flex-grow - Flex-shrink - Flex-basis */
     flex: 1 1 30%;
 }
 
+/* Styles for photographer links */
 .photographer_section article a {
     display: flex;
     align-items: center;
@@ -52,11 +56,13 @@ h1 {
     transition: 400ms ease-in-out;
 }
 
+/* Styles on hover for photographer links */
 .photographer_section article a:hover {
     cursor: pointer;
-    filter:drop-shadow(0 0 0.5rem #D3573C)
+    filter: drop-shadow(0 0 0.5rem #D3573C);
 }
 
+/* Styles for photographer images */
 .photographer_section article img {
     border-radius: 50%;
     object-fit: cover;
@@ -64,6 +70,7 @@ h1 {
     width: 200px;
 }
 
+/* Styles for photographer titles */
 .photographer_section article h2 {
     color: #D3573C;
     font-size: 2.25rem;
@@ -71,6 +78,7 @@ h1 {
     margin: 25px 0 0 0;
 }
 
+/* Styles for photographer paragraphs */
 .photographer_section article p {
     color: #901C1C;
     font-size: 0.875rem;
@@ -78,6 +86,7 @@ h1 {
     margin: 5px 0 0 0;
 }
 
+/* Styles for additional paragraphs */
 .photographer_section article p+p {
     color: black;
     font-size: 0.625rem;
@@ -85,15 +94,16 @@ h1 {
     margin: 5px 0 0 0;
 }
 
-.photographer_section article p+p+p{
+/* Styles for additional paragraphs */
+.photographer_section article p+p+p {
     color: grey;
     font-size: 0.625rem;
     font-weight: 100;
     margin: 5px 0 0 0;
 }
 
-/* Styles pour le focus sur l'ensemble du site */
+/* Styles for focus on the entire site */
 *:focus {
-    outline: none; /* Pour supprimer la bordure par défaut du focus */
-    filter: drop-shadow(0 0 0.5rem #D3573C); /* Style de focus basé sur le drop-shadow du :hover */
+    outline: none;
+    filter: drop-shadow(0 0 0.5rem #D3573C);
 }

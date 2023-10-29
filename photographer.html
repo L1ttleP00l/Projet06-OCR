@@ -13,69 +13,68 @@
   <body>
     <header>
       <a href="index.html">
-        <img src="assets/images/logo.png" class="logo" alt="fisheye logo" aria-label="Logo du site Fisheye"/>
+        <img src="assets/images/logo.png" class="logo" alt="fisheye logo" aria-label="Fisheye Site Logo"/>
       </a>
     </header>
     <main id="main">
       <div class="photograph-header">
-        <button class="contact_button">Contactez-moi</button>
+        <button class="contact_button" aria-label="Contactez-moi">Contactez-moi</button>
       </div>
 
       <div class="filter">
-      <p>Trier par</p>
-      <!-- Filter option -->
-      <select id="photoFilter">
-        <option value="popularity">Popularité</option>
-        <option value="date">Date</option>
-        <option value="title">Titre</option>
-      </select>
+        <p aria-label="Trier par">Trier par</p>
+        <!-- Filter option -->
+        <select id="photoFilter" aria-label="Sélectionnez une option de tri">
+          <option value="popularity">Popularité</option>
+          <option value="date">Date</option>
+          <option value="title">Titre</option>
+        </select>
       </div>
       
       <!-- Lightbox overlay and content -->
-      <div class="lightbox-overlay" onclick="closeLightbox()"></div>
+      <div class="lightbox-overlay" onclick="closeLightbox()" aria-label="Fermer la Lightbox"></div>
       <div class="lightbox-content">
-        <i id="lightbox-close-button" onclick="closeLightbox()" class="fa-solid fa-xmark" style="position: absolute; top: 10px; right: 12px; cursor: pointer; font-size: 3em;"></i>
+        <i id="lightbox-close-button" onclick="closeLightbox()" class="fa-solid fa-xmark" style="position: absolute; top: 10px; right: 12px; cursor: pointer; font-size: 3em;" aria-label="Fermer la Lightbox"></i>
 
-        <!-- Ajout des flèches de navigation dans la lightbox -->
-        <i id="lightbox-arrow-left" class="fa-solid fa-chevron-left lightbox-arrow" style="position: absolute; top: 43%; left: 15px; cursor: pointer; font-size: 3em;"></i>
-        <i id="lightbox-arrow-right" class="fa-solid fa-chevron-right lightbox-arrow" style="position: absolute; top: 43%; right: 15px; cursor: pointer; font-size: 3em;"></i>
+        <!-- Adding navigation arrows to the lightbox -->
+        <i id="lightbox-arrow-left" class="fa-solid fa-chevron-left lightbox-arrow" style="position: absolute; top: 43%; left: 15px; cursor: pointer; font-size: 3em;" aria-label="Image précédente"></i>
+        <i id="lightbox-arrow-right" class="fa-solid fa-chevron-right lightbox-arrow" style="position: absolute; top: 43%; right: 15px; cursor: pointer; font-size: 3em;" aria-label="Image suivante"></i>
 
-        <div id="lightbox-media-container"></div>
-        <div id="lightbox-title"></div>
+        <div id="lightbox-media-container" aria-label="Contenu de la Lightbox"></div>
+        <div id="lightbox-title" aria-label="Titre de la Lightbox"></div>
       </div>
-      <!-- Ajoutez ici votre section "media" -->
-      <section class="media">
-        <!-- Contenu de la section media -->
+      <!-- Media section -->
+      <section class="media" aria-label="Section Média">
+        <!-- Contents of the media section -->
       </section>
       <div class="box">
-        <div id="totallikes"></div>
-        <!-- <i class="fas fa-heart"></i> -->
-        <div id="price"></div>
+        <div id="totallikes" aria-label="Total des likes"></div>
+        <div id="price" aria-label="Prix"></div>
       </div>
     </main>
     <div id="contact_modal">
-			<div class="modal">
-				<header>
-          <h2 id="contact">Contactez-moi</h2>
-          <button onclick="closeModal()" aria-label="Fermer la modal" tabindex="1" class="close-button">
+      <div class="modal">
+        <header>
+          <h2 id="contact" aria-label="Contactez-moi">Contactez-moi</h2>
+          <button onclick="closeModal()" aria-label="Fermer le formulaire de contact" tabindex="1" class="close-button">
             <img src="assets/icons/close.svg" alt="Fermer" />
           </button>
         </header>
-				<form id="contactForm">
-					<div>
-						<label for="prenom">Prénom</label>
-            <input type="text" id="prenom" aria-label="Prénom" tabindex="2" />
-            <label for="nom">Nom</label>
-						<input type="text" id="nom" aria-label="Nom" tabindex="3" />
-						<label for="email">Email</label>
-            <input type="email" id="email" aria-label="Email" tabindex="4" />
-            <label for="message">Votre message</label>
-            <textarea id="message" aria-label="Votre message" tabindex="5"></textarea>
-					</div>
-          <button class="contact_button" tabindex="6">Envoyer</button>
-				</form>
-			</div>
-		</div>
+        <form id="contactForm">
+          <div>
+            <label for="prenom" aria-label="Veuillez indiquer votre prénom">Prénom</label>
+            <input type="text" id="prenom" tabindex="2" />
+            <label for="nom" aria-label="Veuillez indiquer votre nom">Nom</label>
+            <input type="text" id="nom" tabindex="3" />
+            <label for="email" aria-label="Veuillez indiquer votre email">Email</label>
+            <input type="email" id="email" tabindex="4" />
+            <label for="message" aria-label="Veuillez saisir votre message">Votre message</label>
+            <textarea id="message" tabindex="5"></textarea>
+          </div>
+          <button class="contact_button" tabindex="6" aria-label="Envoyer">Envoyer</button>
+        </form>
+      </div>
+    </div>
     <script src="scripts/pages/photographer.js"></script>
     <script src="scripts/utils/contactForm.js"></script>
     <script src="scripts/utils/lightboxForm.js"></script>
