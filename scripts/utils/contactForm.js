@@ -89,7 +89,17 @@ document.querySelector('.contact_button').addEventListener('click', displayModal
 document.getElementById("contactForm").addEventListener("submit", function(event) {
   event.preventDefault();
 
-  // [Your form handling logic]
+    // Retrieve form field values using identifiers
+  const firstName = document.getElementById("prenom").value;
+  const lastName = document.getElementById("nom").value;
+  const email = document.getElementById("email").value;
+  const message = document.getElementById("message").value;
+
+  // Display values in the console
+  console.log("Prénom:", firstName);
+  console.log("Nom:", lastName);
+  console.log("Email:", email);
+  console.log("Message:", message);
 
   closeModal();
 });
