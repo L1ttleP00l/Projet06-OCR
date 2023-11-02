@@ -1,5 +1,5 @@
 // Function to display the modal
-function displayModal() {
+function displayModal () {
   const modal = document.getElementById('contact_modal');
   modal.style.display = 'block';
 
@@ -15,7 +15,7 @@ function displayModal() {
 }
 
 // Function to trap focus within the modal
-function trapFocus(modal) {
+function trapFocus (modal) {
   const focusableContent = modal.querySelectorAll('a[href], button, textarea, input[type="text"], input[type="email"], input[type="password"], input[type="submit"]');
   const firstFocusableElement = focusableContent[0];
   const lastFocusableElement = focusableContent[focusableContent.length - 1];
@@ -28,7 +28,7 @@ function trapFocus(modal) {
   // Set focus to the first focusable element.
   firstFocusableElement.focus();
 
-  modal.addEventListener('keydown', function(e) {
+  modal.addEventListener('keydown', function (e) {
     let isTabPressed = e.key === 'Tab';
 
     if (!isTabPressed) {
@@ -50,7 +50,7 @@ function trapFocus(modal) {
 }
 
 // Function to handle clicks outside the modal
-function handleWindowClick(event) {
+function handleWindowClick (event) {
   const modal = document.getElementById('contact_modal');
 
   // Check if the click was made outside the modal.
@@ -60,14 +60,14 @@ function handleWindowClick(event) {
 }
 
 // Function to handle the 'Escape' key press
-function handleEscapeClick(event) {
+function handleEscapeClick (event) {
   if (event.key === 'Escape') {
     closeModal();
   }
 }
 
 // Function to close the modal
-function closeModal() {
+function closeModal () {
   const modal = document.getElementById('contact_modal');
   modal.style.display = 'none';
 
@@ -86,20 +86,20 @@ function closeModal() {
 
 // Add event listeners to the modal open button and the contact form.
 document.querySelector('.contact_button').addEventListener('click', displayModal);
-document.getElementById("contactForm").addEventListener("submit", function(event) {
+document.getElementById('contactForm').addEventListener('submit', function (event) {
   event.preventDefault();
 
-    // Retrieve form field values using identifiers
-  const firstName = document.getElementById("prenom").value;
-  const lastName = document.getElementById("nom").value;
-  const email = document.getElementById("email").value;
-  const message = document.getElementById("message").value;
+  // Retrieve form field values using identifiers
+  const firstName = document.getElementById('prenom').value;
+  const lastName = document.getElementById('nom').value;
+  const email = document.getElementById('email').value;
+  const message = document.getElementById('message').value;
 
   // Display values in the console
-  console.log("Prénom:", firstName);
-  console.log("Nom:", lastName);
-  console.log("Email:", email);
-  console.log("Message:", message);
+  console.log('Prénom:', firstName);
+  console.log('Nom:', lastName);
+  console.log('Email:', email);
+  console.log('Message:', message);
 
   closeModal();
 });
